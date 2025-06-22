@@ -9,8 +9,8 @@ public static class UseCaseExtensions
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services, IConfiguration configuration) =>
         services.AddNotifications()
-            .AddUsersUseCase(configuration);
+            .AddUsersUseCase();
 
-    private static IServiceCollection AddUsersUseCase(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddCreateIndividualCustomerUseCase(configuration);
+    private static IServiceCollection AddUsersUseCase(this IServiceCollection services) =>
+        services.AddCreateIndividualCustomerUseCase();
 }

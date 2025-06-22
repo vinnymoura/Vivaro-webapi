@@ -5,8 +5,8 @@ namespace Application.Shared.Entities;
 
 public class IndividualCustomer() : Customer
 {
-    [MaxLength(100)] [Required] public string Name { get; init; }
-    [MaxLength(11)] [Required] public string Cpf { get; init; }
+    [MaxLength(100)] [Required] public string Name { get; init; }= null!;
+    [MaxLength(11)] [Required] public string Cpf { get; init; } = null!;
     public DateTime? BirthDate { get; init; }
 
     public IndividualCustomer(CreateIndividualCustomerRequest request) : this()

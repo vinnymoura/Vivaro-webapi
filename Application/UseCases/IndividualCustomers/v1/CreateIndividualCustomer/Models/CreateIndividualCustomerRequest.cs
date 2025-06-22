@@ -4,10 +4,10 @@ namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.M
 
 public class CreateIndividualCustomerRequest
 {
-    public string Name { get; set; } = null!;
-    public LoginRequest Login { get; set; } = null!;
-    public string PhoneNumber { get; set; } = null!;
-    public AddressRequest? Address { get; set; }
-    public string Cpf { get; set; } = null!;
-    public DateTime? BirthDate { get; set; }
+    public string Name { get; init; } = null!;
+    public LoginRequest Login { get; init; } = null!;
+    public string PhoneNumber { get; init; } = null!;
+    public AddressRequest? Address { get; init; }
+    public string Cpf { get; init; } = null!;
+    public DateTime? BirthDate { get; init; }
 }
