@@ -12,10 +12,9 @@ namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer;
 
 public static class CreateIndividualCustomerDependencyInjection
 {
-    public static IServiceCollection AddCreateIndividualCustomerUseCase(this IServiceCollection services, IConfiguration configuration) => services
+    public static IServiceCollection AddCreateIndividualCustomerUseCase(this IServiceCollection services) => services
         .AddDependencies()
         .AddNotifications()
-        .AddCpfValidatorService(configuration)
         .AddScoped<IValidator<CreateIndividualCustomerRequest>, CreateIndividualCustomerRequestValidator>()
         .AddScoped<ICreateIndividualCustomersUseCase, CreateIndividualCustomerUseCase>()
         .Decorate<ICreateIndividualCustomersUseCase, CreateIndividualCustomerValidationUseCase>();

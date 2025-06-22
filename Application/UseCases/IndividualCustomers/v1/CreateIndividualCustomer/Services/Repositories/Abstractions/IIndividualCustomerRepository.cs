@@ -4,6 +4,6 @@ namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.S
 
 public interface IIndividualCustomerRepository
 {
-    bool IndividualCustomerExists(string cpf);
+    Task<bool> IndividualCustomerExists(string cpf);
     Task CreateIndividualCustomer(IndividualCustomer individualCustomer, CancellationToken cancellationToken);
 }

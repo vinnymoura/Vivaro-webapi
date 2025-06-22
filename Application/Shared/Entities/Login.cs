@@ -8,13 +8,15 @@ public class Login()
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 
-    [Required] public string Access { get; set; }
+    [MaxLength(60)]
+    [Required] public string Access { get; init; } = null!;
 
-    [Required] public string Password { get; set; }
+    [MaxLength(150)]
+    [Required] public string Password { get; init; } = null!;
 
     public Login(LoginRequest request) : this()
     {

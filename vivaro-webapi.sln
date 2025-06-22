@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivaro-webapi", "Vivaro-web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{2FC4C610-69F4-4838-B309-40D472C9D8B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F19BEB82-49C6-4309-A175-35EAB39498C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2FC4C610-69F4-4838-B309-40D472C9D8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FC4C610-69F4-4838-B309-40D472C9D8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FC4C610-69F4-4838-B309-40D472C9D8B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19BEB82-49C6-4309-A175-35EAB39498C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19BEB82-49C6-4309-A175-35EAB39498C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19BEB82-49C6-4309-A175-35EAB39498C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19BEB82-49C6-4309-A175-35EAB39498C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

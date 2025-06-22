@@ -10,15 +10,15 @@ public class Address()
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid GuidId { get; set; }
     
-    [MaxLength(255)] public string RecipienteName { get; set; }
-    [MaxLength(255)] public string Street { get; set; }
-    [MaxLength(50)] public string Number { get; set; }
+    [MaxLength(255)] public string RecipienteName { get; set; } = null!; // Name of the recipient, e.g., "John Doe", "Jane Smith"
+    [MaxLength(255)] public string Street { get; set; } = null!; // e.g., "123 Main St", "456 Elm St"
+    [MaxLength(50)] public string Number { get; set; } = null!; // e.g., "123", "456A"
     [MaxLength(100)] public string? Complement { get; set; }
-    [MaxLength(100)] public string Neighborhood { get; set; }
-    [MaxLength(100)] public string City { get; set; }
-    [MaxLength(100)] public string State { get; set; }
-    [MaxLength(20)] public string ZipCode { get; set; } // e.g., "12345-678"
-    [MaxLength(50)] public string Country { get; set; } // e.g., "USA", "Brazil"
+    [MaxLength(100)] public string Neighborhood { get; set; } = null!;
+    [MaxLength(100)] public string City { get; set; } = null!; // e.g., "New York", "São Paulo"
+    [MaxLength(100)] public string State { get; set; } = null!; // e.g., "NY", "SP"
+    [MaxLength(20)] public string ZipCode { get; set; } = null!; // e.g., "12345-678"
+    [MaxLength(50)] public string Country { get; set; } = null!; // e.g., "USA", "Brazil"
 
     public Guid CustomerId { get; set; } // Foreign key to User entity
     [Required]

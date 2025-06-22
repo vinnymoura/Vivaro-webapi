@@ -19,7 +19,7 @@ public class CreateIndividualCustomerUseCase(IIndividualCustomerRepository repos
             throw new InvalidOperationException("Output port not set");
         }
 
-        var individualCustomerExists = repository.IndividualCustomerExists(request.Cpf);
+        var individualCustomerExists = await repository.IndividualCustomerExists(request.Cpf);
         if (individualCustomerExists)
         {
             _outputPort.IndividualCustomerAlreadyExists();

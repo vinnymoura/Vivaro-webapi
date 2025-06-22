@@ -1,5 +1,4 @@
-﻿using Application.Shared.Interfaces.CpfValidator;
-using Application.Shared.Models.Validators;
+﻿using Application.Shared.Models.Validators;
 using Application.Shared.Models.Validators.Address;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
 using FluentValidation;
@@ -8,7 +7,7 @@ namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.V
 
 public class CreateIndividualCustomerRequestValidator : AbstractValidator<CreateIndividualCustomerRequest>
 {
-    public CreateIndividualCustomerRequestValidator(ICpfValidatorService cpfValidatorService)
+    public CreateIndividualCustomerRequestValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -32,8 +31,8 @@ public class CreateIndividualCustomerRequestValidator : AbstractValidator<Create
         RuleFor(x => x.Cpf)
             .NotEmpty()
             .WithMessage("CPF é obrigatório.")
-            .MustAsync(async (cpf, cancellation) => await cpfValidatorService.IsValidCpfAsync(cpf))
-            .WithMessage("CPF inválido na Receita Federal.");
+            .Matches(@"^\d{11}$")
+            .WithMessage("CPF deve conter 11 dígitos numéricos.");
 
         RuleFor(x => x.BirthDate)
             .LessThan(DateTime.Now)
