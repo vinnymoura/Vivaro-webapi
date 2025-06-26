@@ -8,7 +8,7 @@ public class Login()
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; init; }
+    public Guid GuidId { get; init; }
 
     public Guid UserId { get; init; }
 
