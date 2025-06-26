@@ -33,12 +33,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .IsRequired();
 
         _ = modelBuilder.Entity<Login>()
-            .HasKey(l => l.Id);
+            .HasKey(l => l.GuidId);
 
         _ = modelBuilder.Entity<Address>()
-            .HasOne(a => a.Customer)
+            .HasOne(a => a.User)
             .WithMany(u => u.Addresses)
-            .HasForeignKey(a => a.CustomerId)
+            .HasForeignKey(a => a.UserId)
             .IsRequired();
             
         // Configuração para AdminUserRole

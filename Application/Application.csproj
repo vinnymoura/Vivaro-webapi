@@ -31,11 +31,4 @@
       <PackageReference Include="Scrutor" Version="6.1.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="UseCases\CorporateCustomers\v1\CreateCorporateCustomer\Abstractions\" />
-      <Folder Include="UseCases\CorporateCustomers\v1\CreateCorporateCustomer\Models\" />
-      <Folder Include="UseCases\CorporateCustomers\v1\CreateCorporateCustomer\Services\" />
-      <Folder Include="UseCases\CorporateCustomers\v1\CreateCorporateCustomer\Validators\" />
-    </ItemGroup>
-
 </Project>
