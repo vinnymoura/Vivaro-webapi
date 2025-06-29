@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Application.Shared.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.Shared.Entities;
 
-public class Customer : User
+public class Customer 
 {
-    public ICollection<Address> Addresses { get; set; } = new List<Address>();
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; init; }
+
+    public string KeycloakId { get; init; }
+    public ICollection<Address> Addresses { get; protected init; } = new List<Address>();
     [MaxLength(15)] public string? PhoneNumber { get; init; }
-    public EnumCustomerStatus CustomerStatus { get; set; }
 }

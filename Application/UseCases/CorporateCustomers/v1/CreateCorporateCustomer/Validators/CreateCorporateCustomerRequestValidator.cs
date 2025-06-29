@@ -17,11 +17,6 @@ public class CreateCorporateCustomerRequestValidator : AbstractValidator<CreateC
             .SetValidator(new AddressRequestValidator()!)
             .When(x => x.Address != null);
 
-        RuleFor(x => x.Login)
-            .NotNull()
-            .WithMessage("Login é obrigatório.")
-            .SetValidator(new LoginRequestValidator());
-
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .WithMessage("Telefone é obrigatório.")

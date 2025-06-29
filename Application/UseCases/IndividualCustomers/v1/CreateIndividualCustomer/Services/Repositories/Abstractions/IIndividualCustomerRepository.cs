@@ -1,4 +1,5 @@
 ﻿using Application.Shared.Entities;
+using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
 
 namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Services.Repositories.Abstractions;
 

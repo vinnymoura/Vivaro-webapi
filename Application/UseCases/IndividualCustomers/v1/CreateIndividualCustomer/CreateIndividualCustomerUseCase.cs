@@ -1,15 +1,19 @@
 ﻿using Application.Shared.Entities;
 using Application.Shared.Services.Abstractions;
+using Application.Shared.Services.Keycloak.Abstractions;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Abstractions;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Services.Repositories.Abstractions;
 
 namespace Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer;
 
-public class CreateIndividualCustomerUseCase(IIndividualCustomerRepository repository, IUnitOfWork unitOfWork) : ICreateIndividualCustomersUseCase
+public class CreateIndividualCustomerUseCase(
+    IIndividualCustomerRepository repository,
+    IKeycloakAdminService keycloakAdminService,
+    IUnitOfWork unitOfWork) : ICreateIndividualCustomersUseCase
 {
     private IOutputPort? _outputPort;
-    
+
     public void SetOutputPort(IOutputPort outputPort) => _outputPort = outputPort;
 
     public async Task ExecuteAsync(CreateIndividualCustomerRequest request, CancellationToken cancellationToken)
@@ -26,15 +30,25 @@ public class CreateIndividualCustomerUseCase(IIndividualCustomerRepository repos
             return;
         }
 
-        var individualCustomer = await SaveIndividualCustomerAsync(request, cancellationToken);
+        var userKeycloak = new UserKeycloak(request);
+        var keycloakId = await keycloakAdminService.CreateUserAsync(userKeycloak, cancellationToken);
+
+        if (keycloakId == null)
+        {
+            _outputPort.KeycloakCreationFailed();
+            return;
+        }
+
+        var individualCustomer = await SaveIndividualCustomerAsync(request, keycloakId, cancellationToken);
 
         _outputPort.IndividualCustomerCreated(individualCustomer);
     }
 
     private async Task<IndividualCustomer> SaveIndividualCustomerAsync(CreateIndividualCustomerRequest request,
+        string keycloakId,
         CancellationToken cancellationToken)
     {
-        var individualCustomer = new IndividualCustomer(request);
+        var individualCustomer = new IndividualCustomer(request, keycloakId);
         await repository.CreateIndividualCustomer(individualCustomer, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return individualCustomer;

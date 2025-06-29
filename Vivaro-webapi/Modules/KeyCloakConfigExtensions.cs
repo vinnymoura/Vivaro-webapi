@@ -17,8 +17,19 @@ public static class KeyCloakConfigExtensions
             .GetSection(KeycloakProtectionClientOptions.Section)
             .Get<KeycloakProtectionClientOptions>();
 
-        services.AddKeycloakAuthentication(authenticationOptions!);
+        services.Configure<KeycloakProtectionClientOptions>(
+            configuration.GetSection(KeycloakProtectionClientOptions.Section));
+        services.Configure<KeycloakAuthenticationOptions>(
+            configuration.GetSection(KeycloakAuthenticationOptions.Section));
+
         services.AddKeycloakAuthorization(authorizationOptions!);
+        services.AddKeycloakWebApiAuthentication(configuration,
+            (options) =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.Audience = authenticationOptions!.Resource;
+            });
+        services.AddAuthorization();
 
         return services;
     }

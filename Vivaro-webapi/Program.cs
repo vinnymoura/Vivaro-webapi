@@ -20,7 +20,7 @@ builder.Services.AddHealthChecks();
 builder.Services.ConfigureDataBase(builder.Configuration);
 builder.Services.AddUseCases(builder.Configuration);
 builder.Services.AddApiVersion();
-//builder.Services.ConfigureKeyCloak(builder.Configuration);
+builder.Services.ConfigureKeyCloak(builder.Configuration);
 
 builder.Services.AddCors(opt =>
 {
@@ -29,6 +29,7 @@ builder.Services.AddCors(opt =>
         .AllowAnyMethod()
     );
 });
+
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
@@ -40,7 +41,6 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

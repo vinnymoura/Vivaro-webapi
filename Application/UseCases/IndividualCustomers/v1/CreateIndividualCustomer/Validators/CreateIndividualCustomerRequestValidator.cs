@@ -9,19 +9,18 @@ public class CreateIndividualCustomerRequestValidator : AbstractValidator<Create
 {
     public CreateIndividualCustomerRequestValidator()
     {
-        RuleFor(x => x.Name)
+        RuleFor(x => x.FirstName)
             .NotEmpty()
             .WithMessage("Nome é obrigatório.");
+        
+        RuleFor(x => x.LastName)
+            .NotEmpty()
+            .WithMessage("Sobrenome é obrigatório.");
 
         RuleFor(x => x.Address)
             .SetValidator(new AddressRequestValidator()!)
             .When(x => x.Address != null);
-
-        RuleFor(x => x.Login)
-            .NotNull()
-            .WithMessage("Login é obrigatório.")
-            .SetValidator(new LoginRequestValidator());
-
+        
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .WithMessage("Telefone é obrigatório.")
