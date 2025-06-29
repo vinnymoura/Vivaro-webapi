@@ -1,5 +1,7 @@
 ﻿using Application.Shared.Notifications;
 using Application.Shared.Services.CpfValidator;
+using Application.Shared.Services.Keycloak;
+using Application.Shared.Services.Keycloak.Abstractions;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Abstractions;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Services;
@@ -15,6 +17,7 @@ public static class CreateIndividualCustomerDependencyInjection
     public static IServiceCollection AddCreateIndividualCustomerUseCase(this IServiceCollection services) => services
         .AddDependencies()
         .AddNotifications()
+        .AddScoped<IKeycloakAdminService, KeycloakAdminService>()
         .AddScoped<IValidator<CreateIndividualCustomerRequest>, CreateIndividualCustomerRequestValidator>()
         .AddScoped<ICreateIndividualCustomersUseCase, CreateIndividualCustomerUseCase>()
         .Decorate<ICreateIndividualCustomersUseCase, CreateIndividualCustomerValidationUseCase>();

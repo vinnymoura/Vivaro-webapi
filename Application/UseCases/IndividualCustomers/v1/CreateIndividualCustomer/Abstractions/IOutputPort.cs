@@ -7,4 +7,5 @@ public interface IOutputPort
     void InvalidRequest();
     void IndividualCustomerAlreadyExists();
     void IndividualCustomerCreated(IndividualCustomer individualCustomer);
+    void KeycloakCreationFailed();
 }

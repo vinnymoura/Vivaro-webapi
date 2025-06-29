@@ -3,6 +3,7 @@ using Application.Shared.Models.Errors;
 using Application.Shared.Notifications;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Abstractions;
 using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Vivaro_webapi.Controllers.IndividualCustomers.v1;
@@ -16,6 +17,7 @@ public class CreateIndividualCustomer(ICreateIndividualCustomersUseCase useCase,
     private IActionResult? _viewModel;
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Post([FromBody] CreateIndividualCustomerRequest request,
         CancellationToken cancellationToken)
     {
@@ -32,4 +34,7 @@ public class CreateIndividualCustomer(ICreateIndividualCustomersUseCase useCase,
 
     void IOutputPort.IndividualCustomerCreated(IndividualCustomer individualCustomer)
         => _viewModel = Created($"api/v1/IndividualCustomers/{individualCustomer.Id}", individualCustomer);
+
+    void IOutputPort.KeycloakCreationFailed()
+        => _viewModel = Conflict(new ValidationError(notification, HttpContext));
 }
