@@ -8,7 +8,7 @@ public class Address()
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid GuidId { get; set; }
+    public Guid Id { get; set; }
     
     [MaxLength(255)] public string RecipienteName { get; set; } = null!; // Name of the recipient, e.g., "John Doe", "Jane Smith"
     [MaxLength(255)] public string Street { get; set; } = null!; // e.g., "123 Main St", "456 Elm St"

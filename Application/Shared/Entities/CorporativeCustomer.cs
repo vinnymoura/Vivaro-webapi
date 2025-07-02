@@ -15,11 +15,10 @@ public class CorporateCustomer() : Customer
         CompanyName = request.CompanyName;
         Cnpj = request.Cnpj;
         TradeName = request.TradeName;
+        StateRegistration = request.StateRegistration;
         base.Addresses = request.Address is not null
             ? new List<Address> { new Address(request.Address) }
             : new List<Address>();
         base.PhoneNumber = request.PhoneNumber;
-        base.CustomerStatus = Enum.EnumCustomerStatus.Inactive;
-        base.Login = new Login(request.Login);
     }
 }
