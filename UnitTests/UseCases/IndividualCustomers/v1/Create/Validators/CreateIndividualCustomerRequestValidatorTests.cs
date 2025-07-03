@@ -1,8 +1,8 @@
-﻿using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
-using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Validators;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
 using Xunit;
 using Application.Shared.Models.Request;
+using Application.UseCases.PersonUseCase.v1.CreatePerson.Models;
+using Application.UseCases.PersonUseCase.v1.CreatePerson.Validators;
 
 namespace UnitTests.UseCases.IndividualCustomers.v1.Create.Validators;
 
@@ -15,7 +15,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData(" ")]
     public async Task ShouldHaveError_When_FirstNameIsEmpty(string firstName)
     {
-        var request = new CreateIndividualCustomerRequest { FirstName = firstName };
+        var request = new CreatePersonRequest { FirstName = firstName };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.FirstName)
@@ -27,7 +27,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData(" ")]
     public async Task ShouldHaveError_When_LastNameIsEmpty(string lastName)
     {
-        var request = new CreateIndividualCustomerRequest { FirstName = "John", LastName = lastName};
+        var request = new CreatePersonRequest { FirstName = "John", LastName = lastName};
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.LastName)
@@ -39,7 +39,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData(" ")]
     public async Task ShouldHaveError_When_PhoneNumberIsEmpty(string phoneNumber)
     {
-        var request = new CreateIndividualCustomerRequest { PhoneNumber = phoneNumber };
+        var request = new CreatePersonRequest { PhoneNumber = phoneNumber };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.PhoneNumber)
@@ -52,7 +52,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData("abc1234567")]
     public async Task ShouldHaveError_When_PhoneNumberIsInvalid(string phoneNumber)
     {
-        var request = new CreateIndividualCustomerRequest { PhoneNumber = phoneNumber };
+        var request = new CreatePersonRequest { PhoneNumber = phoneNumber };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.PhoneNumber)
@@ -64,7 +64,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData("12345678901")]
     public async Task ShouldNotHavePhoneNumberError_When_PhoneNumberIsValid(string phoneNumber)
     {
-        var request = new CreateIndividualCustomerRequest
+        var request = new CreatePersonRequest
         {
             FirstName = "Nome",
             PhoneNumber = phoneNumber,
@@ -80,7 +80,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData(" ")]
     public async Task ShouldHaveError_When_CpfIsEmpty(string cpf)
     {
-        var request = new CreateIndividualCustomerRequest { Cpf = cpf };
+        var request = new CreatePersonRequest { Cpf = cpf };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.Cpf)
@@ -93,7 +93,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [InlineData("abcdefghijk")]
     public async Task ShouldHaveError_When_CpfIsInvalid(string cpf)
     {
-        var request = new CreateIndividualCustomerRequest { Cpf = cpf };
+        var request = new CreatePersonRequest { Cpf = cpf };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.Cpf)
@@ -103,7 +103,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [Fact]
     public async Task ShouldHaveError_When_BirthDateIsInFuture()
     {
-        var request = new CreateIndividualCustomerRequest { BirthDate = DateTime.Now.AddDays(1) };
+        var request = new CreatePersonRequest { BirthDate = DateTime.Now.AddDays(1) };
         var result = await _validator.TestValidateAsync(request);
 
         result.ShouldHaveValidationErrorFor(c => c.BirthDate)
@@ -113,7 +113,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [Fact]
     public async Task ShouldNotHaveBirthDateError_When_BirthDateIsInPast()
     {
-        var request = new CreateIndividualCustomerRequest
+        var request = new CreatePersonRequest
         {
             FirstName = "Nome",
             PhoneNumber = "12345678901",
@@ -128,7 +128,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [Fact]
     public async Task ShouldValidateAddress_When_AddressIsProvided()
     {
-        var request = new CreateIndividualCustomerRequest
+        var request = new CreatePersonRequest
         {
             Address = new AddressRequest { ZipCode = "invalid" }
         };
@@ -141,7 +141,7 @@ public class CreateIndividualCustomerRequestValidatorTests
     [Fact]
     public async Task ShouldNotHaveErrors_When_RequestIsValid()
     {
-        var request = new CreateIndividualCustomerRequest
+        var request = new CreatePersonRequest
         {
             FirstName = "Nome Completo",
             LastName = "Sobrenome Completo",

@@ -20,9 +20,9 @@ public class Address()
     [MaxLength(20)] public string ZipCode { get; set; } = null!; // e.g., "12345-678"
     [MaxLength(50)] public string Country { get; set; } = null!; // e.g., "USA", "Brazil"
 
-    public Guid UserId { get; set; } // Foreign key to User entity
+    public Guid PersonId { get; set; } // Foreign key to User entity
     [Required]
-    public Customer User { get; set; } = null!;
+    public Person Person { get; set; } = null!;
 
     public Address(AddressRequest? address) : this()
     {
