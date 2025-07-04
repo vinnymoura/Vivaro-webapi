@@ -26,5 +26,6 @@ public class LegalPerson() : Person
         base.Email = request.Email;
         base.Password = request.Password;
         base.KeycloakId = keycloakId;
+        base.PersonType = request.PersonType;
     }
 }

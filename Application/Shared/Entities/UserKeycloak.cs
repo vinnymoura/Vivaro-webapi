@@ -37,7 +37,7 @@ public class UserKeycloak()
         else if (request.PersonType == PersonType.LegalPerson)
         {
             firstName = request.CompanyName!;
-            lastName = "(Pessoa Jurídica)";
+            lastName = "Pessoa Jurídica";
         }
     }
 }

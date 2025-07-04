@@ -19,47 +19,90 @@ public class CreatePersonUseCase(
 
     public async Task ExecuteAsync(CreatePersonRequest request, CancellationToken cancellationToken)
     {
-        switch (request.PersonType)
+        if (!await ValidatePersonDoesNotExist(request))
+            return;
+
+        var keycloakId = await CreateKeycloakUser(request, cancellationToken);
+        if (string.IsNullOrEmpty(keycloakId))
+            return;
+
+        var person = await CreateAndSavePerson(request, keycloakId, cancellationToken);
+        NotifyPersonCreated(person);
+    }
+
+    private async Task<bool> ValidatePersonDoesNotExist(CreatePersonRequest request)
+    {
+        return request.PersonType switch
         {
-            case PersonType.NaturalPerson:
-            {
-                var individualCustomerExists = await repository.IndividualCustomerExists(request.Cpf!);
-                if (individualCustomerExists)
-                {
-                    _outputPort!.NaturalPersonAlreadyExists();
-                    return;
-                }
+            PersonType.NaturalPerson => await ValidateNaturalPersonDoesNotExist(request.Cpf!),
+            PersonType.LegalPerson => await ValidateLegalPersonDoesNotExist(request.Cnpj!),
+            _ => HandleUnsupportedPersonType()
+        };
+    }
 
-                break;
-            }
-            case PersonType.LegalPerson:
-            {
-                var corporateCustomerExists = await repository.LegalCustomerExists(request.Cnpj!);
-                if (corporateCustomerExists)
-                {
-                    _outputPort!.LegalPersonAlreadyExists();
-                    return;
-                }
-
-                break;
-            }
-            default:
-                _outputPort!.PersonTypeNotSupported();
-                return;
+    private async Task<bool> ValidateNaturalPersonDoesNotExist(string cpf)
+    {
+        var exists = await repository.IndividualCustomerExists(cpf);
+        if (exists)
+        {
+            _outputPort!.NaturalPersonAlreadyExists();
+            return false;
         }
 
+        return true;
+    }
+
+    private async Task<bool> ValidateLegalPersonDoesNotExist(string cnpj)
+    {
+        var exists = await repository.LegalCustomerExists(cnpj);
+        if (exists)
+        {
+            _outputPort!.LegalPersonAlreadyExists();
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool HandleUnsupportedPersonType()
+    {
+        _outputPort!.PersonTypeNotSupported();
+        return false;
+    }
+
+    private async Task<string?> CreateKeycloakUser(CreatePersonRequest request, CancellationToken cancellationToken)
+    {
         var userKeycloak = new UserKeycloak(request);
         var keycloakId = await keycloakService.CreateUserAsync(userKeycloak, cancellationToken);
 
-        if (string.IsNullOrEmpty(keycloakId))
+        if (!string.IsNullOrEmpty(keycloakId)) return keycloakId;
+
+        _outputPort!.KeycloakCreationFailed();
+        return null;
+    }
+
+    private async Task<Person> CreateAndSavePerson(CreatePersonRequest request, string keycloakId,
+        CancellationToken cancellationToken)
+    {
+        var person = CreatePersonEntity(request, keycloakId);
+        await repository.CreatePerson(person, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return person;
+    }
+
+    private static Person CreatePersonEntity(CreatePersonRequest request, string keycloakId)
+    {
+        return request.PersonType switch
         {
-            _outputPort!.KeycloakCreationFailed();
-            return;
-        }
+            PersonType.NaturalPerson => new NaturalPerson(request, keycloakId),
+            PersonType.LegalPerson => new LegalPerson(request, keycloakId),
+            _ => throw new InvalidOperationException($"Tipo de pessoa não suportado: {request.PersonType}")
+        };
+    }
 
-        var personToCreate = await SaveIndividualCustomerAsync(request, keycloakId, cancellationToken);
-
-        switch (personToCreate)
+    private void NotifyPersonCreated(Person person)
+    {
+        switch (person)
         {
             case NaturalPerson naturalPerson:
                 _outputPort!.NaturalPersonCreated(naturalPerson);
@@ -68,24 +111,5 @@ public class CreatePersonUseCase(
                 _outputPort!.LegalPersonCreated(legalPerson);
                 break;
         }
-    }
-
-    private async Task<Person> SaveIndividualCustomerAsync(CreatePersonRequest request,
-        string keycloakId,
-        CancellationToken cancellationToken)
-    {
-        Person personToCreate;
-        if (request.PersonType == PersonType.NaturalPerson)
-        {
-            personToCreate = new NaturalPerson(request, keycloakId);
-        }
-        else
-        {
-            personToCreate = new LegalPerson(request, keycloakId);
-        }
-
-        await repository.CreatePerson(personToCreate, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        return personToCreate;
     }
 }

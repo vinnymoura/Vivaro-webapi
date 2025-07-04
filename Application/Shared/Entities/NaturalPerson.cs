@@ -23,5 +23,6 @@ public class NaturalPerson() : Person
             : new List<Address>();
         base.PhoneNumber = request.PhoneNumber;
         base.KeycloakId = keycloakId;
+        base.PersonType = request.PersonType;
     }
 }

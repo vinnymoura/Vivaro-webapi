@@ -19,8 +19,8 @@ public class KeycloakAdminService(
     Notification notification) : IKeycloakAdminService
 {
     private readonly IConfiguration _configuration = configuration;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly KeycloakProtectionClientOptions _keycloakOptions = keycloakOptions.Value;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly HttpClient _httpClient = httpClient;
     
     public async Task<string?> CreateUserAsync(UserKeycloak userKeycloak, CancellationToken cancellationToken)
