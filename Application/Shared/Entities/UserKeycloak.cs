@@ -1,4 +1,5 @@
-﻿using Application.UseCases.IndividualCustomers.v1.CreateIndividualCustomer.Models;
+﻿using Application.Shared.Enum;
+using Application.UseCases.PersonUseCase.v1.CreatePerson.Models;
 
 namespace Application.Shared.Entities;
 
@@ -11,16 +12,32 @@ public class UserKeycloak()
     public string lastName { get; set; }
     public object[] credentials { get; set; }
 
-    public UserKeycloak(CreateIndividualCustomerRequest request) : this()
+    public Dictionary<string, string> attributes { get; set; } = new Dictionary<string, string>();
+
+    public UserKeycloak(CreatePersonRequest request) : this()
     {
         username = request.Email;
         email = request.Email;
-        firstName = request.FirstName;
-        lastName = request.LastName;
         enabled = true;
         credentials =
         [
             new { type = "password", value = request.Password, temporary = false }
         ];
+
+        attributes = new Dictionary<string, string>
+        {
+            { "personType", request.PersonType.ToString() }
+        };
+
+        if (request.PersonType == PersonType.NaturalPerson)
+        {
+            firstName = request.FirstName!;
+            lastName = request.LastName!;
+        }
+        else if (request.PersonType == PersonType.LegalPerson)
+        {
+            firstName = request.CompanyName!;
+            lastName = "Pessoa Jurídica";
+        }
     }
 }

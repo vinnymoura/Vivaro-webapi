@@ -6,19 +6,26 @@ namespace Application.Shared.Context;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public required DbSet<Address> Addresses { get; set; }
-    public required DbSet<Customer> Users { get; set; }
+    public required DbSet<Person> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        _ = modelBuilder.Entity<Customer>()
-            .HasDiscriminator<string>("UserType")
-            .HasValue<IndividualCustomer>("IndividualCustomer")
-            .HasValue<CorporateCustomer>("CorporateCustomer");
-            
+        _ = modelBuilder.Entity<Person>().ToTable("Persons");
+        _ = modelBuilder.Entity<NaturalPerson>().ToTable("NaturalPersons");
+        _ = modelBuilder.Entity<LegalPerson>().ToTable("LegalPersons");
+
+        _ = modelBuilder.Entity<NaturalPerson>()
+            .HasIndex(nc => nc.Cpf)
+            .IsUnique();
+
+        _ = modelBuilder.Entity<LegalPerson>()
+            .HasIndex(lc => lc.Cnpj)
+            .IsUnique();
+
         _ = modelBuilder.Entity<Address>()
-            .HasOne(a => a.User)
+            .HasOne(a => a.Person)
             .WithMany(u => u.Addresses)
-            .HasForeignKey(a => a.UserId)
+            .HasForeignKey(a => a.PersonId)
             .IsRequired();
     }
 }
