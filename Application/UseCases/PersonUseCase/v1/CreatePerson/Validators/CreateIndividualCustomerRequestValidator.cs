@@ -11,12 +11,17 @@ public class CreateIndividualCustomerRequestValidator : AbstractValidator<Create
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("O e-mail é obrigatório.")
+            .MaximumLength(256).WithMessage("O e-mail não pode exceder 256 caracteres.")
+            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").WithMessage("O e-mail fornecido não é válido.")
+            .Must(NotHaveConsecutiveDots).WithMessage("O e-mail não pode conter pontos consecutivos.")
+            .Must(NotStartOrEndWithDot).WithMessage("O e-mail não pode começar ou terminar com ponto.")
             .EmailAddress().WithMessage("O e-mail fornecido não é válido.");
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("A senha é obrigatória.")
-            .MinimumLength(8).WithMessage("A senha deve ter no mínimo 8 caracteres.");
-        // Adicione outras regras de complexidade de senha aqui se necessário.
+            .MinimumLength(8).WithMessage("A senha deve ter no mínimo 8 caracteres.")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*&])[A-Za-z\d@$!%*?&]{8,}$")
+            .WithMessage("A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um dígito e um caractere especial.");
 
         RuleFor(x => x.PhoneNumber)
             .NotEmpty().WithMessage("O telefone é obrigatório.")
@@ -27,34 +32,62 @@ public class CreateIndividualCustomerRequestValidator : AbstractValidator<Create
             .SetValidator(new AddressRequestValidator()!) // Reutiliza seu validador de endereço
             .When(x => x.Address != null);
 
-        When(x => x.PersonType == PersonType.NaturalPerson, () =>
-        {
-            RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage("O nome é obrigatório para Pessoa Física.");
+        // Validação específica para Pessoa Física e Pessoa Jurídica
+        RuleFor(x => x.PersonType)
+            .IsInEnum().WithMessage("O tipo de pessoa deve ser 'Pessoa Física' ou 'Pessoa Jurídica'.");
 
-            RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage("O sobrenome é obrigatório para Pessoa Física.");
+        RuleFor(x => x.FirstName)
+            .NotEmpty().WithMessage("O nome é obrigatório.")
+            .When(x => x.PersonType == PersonType.NaturalPerson);
 
-            RuleFor(x => x.Cpf)
-                .NotEmpty().WithMessage("O CPF é obrigatório para Pessoa Física.")
-                .Length(11).WithMessage("O CPF deve conter exatamente 11 dígitos.")
-                .Must(BeAValidCpf).WithMessage("O CPF fornecido é inválido."); // Validação de algoritmo
+        RuleFor(x => x.LastName)
+            .NotEmpty().WithMessage("O sobrenome é obrigatório.")
+            .When(x => x.PersonType == PersonType.NaturalPerson);
 
-            RuleFor(x => x.BirthDate)
-                .NotEmpty().WithMessage("A data de nascimento é obrigatória para Pessoa Física.")
-                .LessThan(DateTime.Now).WithMessage("A data de nascimento deve ser no passado.");
-        });
+        RuleFor(x => x.BirthDate)
+            .NotEmpty().WithMessage("A data de nascimento é obrigatória.")
+            .LessThan(DateTime.Now).WithMessage("A data de nascimento deve ser anterior à data atual.")
+            .When(x => x.PersonType == PersonType.NaturalPerson);
 
-        When(x => x.PersonType == PersonType.LegalPerson, () =>
-        {
-            RuleFor(x => x.CompanyName)
-                .NotEmpty().WithMessage("A Razão Social é obrigatória para Pessoa Jurídica.");
+        // Validação condicional baseada no tipo de pessoa
+        RuleFor(x => x.Cpf)
+            .NotEmpty().WithMessage("O CPF é obrigatório para Pessoa Física.")
+            .Length(11).WithMessage("O CPF deve conter exatamente 11 dígitos.")
+            .Must(BeAValidCpf).WithMessage("O CPF fornecido é inválido.") // Validação de algoritmo
+            .When(x => x.PersonType == PersonType.NaturalPerson);
 
-            RuleFor(x => x.Cnpj)
-                .NotEmpty().WithMessage("O CNPJ é obrigatório para Pessoa Jurídica.")
-                .Length(14).WithMessage("O CNPJ deve conter exatamente 14 dígitos.")
-                .Must(BeAValidCnpj).WithMessage("O CNPJ fornecido é inválido."); // Validação de algoritmo
-        });
+        RuleFor(x => x.CompanyName)
+            .NotEmpty().WithMessage("O nome da empresa é obrigatório.")
+            .When(x => x.PersonType == PersonType.LegalPerson);
+
+        RuleFor(x => x.TradeName)
+            .NotEmpty().WithMessage("O nome fantasia é obrigatório.")
+            .When(x => x.PersonType == PersonType.LegalPerson);
+
+        RuleFor(x => x.Cnpj)
+            .NotEmpty().WithMessage("O CNPJ é obrigatório para Pessoa Jurídica.")
+            .Length(14).WithMessage("O CNPJ deve conter exatamente 14 dígitos.")
+            .Must(BeAValidCnpj).WithMessage("O CNPJ fornecido é inválido.") // Validação de algoritmo
+            .When(x => x.PersonType == PersonType.LegalPerson);
+    }
+
+    private static bool NotHaveConsecutiveDots(string email)
+    {
+        return !string.IsNullOrEmpty(email) && !email.Contains("..");
+    }
+
+    private static bool NotStartOrEndWithDot(string email)
+    {
+        if (string.IsNullOrEmpty(email)) return false;
+
+        var parts = email.Split('@');
+        if (parts.Length != 2) return false;
+
+        var localPart = parts[0];
+        var domainPart = parts[1];
+
+        return !localPart.StartsWith($".") && !localPart.EndsWith($".") &&
+               !domainPart.StartsWith($".") && !domainPart.EndsWith($".");
     }
 
     private static bool BeAValidCpf(string cpf)

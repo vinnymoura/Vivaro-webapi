@@ -1,5 +1,6 @@
 ﻿using Application.Shared.Notifications;
 using Application.UseCases.PersonUseCase.v1.CreatePerson;
+using Application.UseCases.PersonUseCase.v1.CreatePerson.Abstractions;
 using Application.UseCases.PersonUseCase.v1.CreatePerson.Models;
 using AutoFixture;
 using FluentValidation;
