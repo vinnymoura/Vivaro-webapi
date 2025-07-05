@@ -24,7 +24,6 @@ public class LegalPerson() : Person
             : new List<Address>();
         base.PhoneNumber = request.PhoneNumber;
         base.Email = request.Email;
-        base.Password = request.Password;
         base.KeycloakId = keycloakId;
         base.PersonType = request.PersonType;
     }

@@ -6,7 +6,7 @@ namespace Application.Shared.Context;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public required DbSet<Address> Addresses { get; set; }
-    public required DbSet<Person> Users { get; set; }
+    public required DbSet<Person> Persons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,7 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         _ = modelBuilder.Entity<Address>()
             .HasOne(a => a.Person)
-            .WithMany(u => u.Addresses)
+            .WithMany(p => p.Addresses) 
             .HasForeignKey(a => a.PersonId)
             .IsRequired();
     }

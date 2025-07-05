@@ -17,7 +17,6 @@ public class NaturalPerson() : Person
         Cpf = request.Cpf!;
         BirthDate = request.BirthDate;
         Email = request.Email;
-        Password = request.Password;
         base.Addresses = request.Address is not null
             ? new List<Address> { new Address(request.Address) }
             : new List<Address>();

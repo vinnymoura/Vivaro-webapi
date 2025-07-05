@@ -20,7 +20,7 @@ public class CreateIndividualCustomerRequestValidator : AbstractValidator<Create
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("A senha é obrigatória.")
             .MinimumLength(8).WithMessage("A senha deve ter no mínimo 8 caracteres.")
-            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*&])[A-Za-z\d@$!%*?&]{8,}$")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*&])[A-Za-z\d@$!%*?&.]{8,}$")
             .WithMessage("A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um dígito e um caractere especial.");
 
         RuleFor(x => x.PhoneNumber)

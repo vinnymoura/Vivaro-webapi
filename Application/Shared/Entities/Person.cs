@@ -21,9 +21,4 @@ public abstract class Person()
     [Required]
     [MaxLength(100)]
     public string Email { get; init; } = null!;
-
-    [Required]
-    [MinLength(6)]
-    [MaxLength(100)]
-    public string Password { get; init; } = null!;
 }

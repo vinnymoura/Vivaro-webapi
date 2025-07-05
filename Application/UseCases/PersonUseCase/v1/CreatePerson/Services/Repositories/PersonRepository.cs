@@ -8,11 +8,11 @@ namespace Application.UseCases.PersonUseCase.v1.CreatePerson.Services.Repositori
 public class PersonRepository(AppDbContext context) : IPersonRepository
 {
     public async Task<bool> IndividualCustomerExists(string cpf) =>
-        await context.Users.OfType<NaturalPerson>().AnyAsync(ic => ic.Cpf == cpf);
+        await context.Persons.OfType<NaturalPerson>().AnyAsync(ic => ic.Cpf == cpf);
 
     public async Task<bool> LegalCustomerExists(string cnpj) =>
-        await context.Users.OfType<LegalPerson>().AnyAsync(lc => lc.Cnpj == cnpj);
+        await context.Persons.OfType<LegalPerson>().AnyAsync(lc => lc.Cnpj == cnpj);
 
     public async Task CreatePerson(Person person, CancellationToken cancellationToken) =>
-        await context.Users.AddAsync(person, cancellationToken);
+        await context.Persons.AddAsync(person, cancellationToken);
 }
