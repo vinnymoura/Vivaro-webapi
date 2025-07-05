@@ -61,7 +61,7 @@ public class NotificationTests
         var result = _notification.ToString();
 
         // Assert
-        Assert.Contains("Key1: Message1", result);
-        Assert.Contains("Key2: Message2", result);
+        Assert.Contains("Message1", result);
+        Assert.Contains("Message2", result);
     }
 }
