@@ -6,9 +6,9 @@ using FluentValidation;
 namespace Application.UseCases.PersonUseCase.v1.CreatePerson;
 
 public class CreatePersonValidationUseCase(
-    IPersonCustomersUseCase useCase,
+    ICreatePersonUseCase useCase,
     IValidator<CreatePersonRequest> validator,
-    Notification notification) : IPersonCustomersUseCase
+    Notification notification) : ICreatePersonUseCase
 {
     
     private IOutputPort? _outputPort;

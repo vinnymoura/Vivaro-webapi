@@ -11,7 +11,7 @@ namespace Application.UseCases.PersonUseCase.v1.CreatePerson;
 public class CreatePersonUseCase(
     IPersonRepository repository,
     IKeycloakAdminService keycloakService,
-    IUnitOfWork unitOfWork) : IPersonCustomersUseCase
+    IUnitOfWork unitOfWork) : ICreatePersonUseCase
 {
     private IOutputPort? _outputPort;
 

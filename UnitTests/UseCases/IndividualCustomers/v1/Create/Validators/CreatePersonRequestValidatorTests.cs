@@ -7,9 +7,9 @@ using Application.Shared.Enum;
 
 namespace UnitTests.UseCases.IndividualCustomers.v1.Create.Validators;
 
-public class CreateIndividualCustomerRequestValidatorTests
+public class CreatePersonRequestValidatorTests
 {
-    private readonly CreateIndividualCustomerRequestValidator _validator = new();
+    private readonly CreatePersonRequestValidator _validator = new();
 
     #region Email Tests
 

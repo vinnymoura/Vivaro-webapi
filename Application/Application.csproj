@@ -32,4 +32,10 @@
       <PackageReference Include="Scrutor" Version="6.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\PersonUseCase\v1\DeletePerson\Abstractions\" />
+      <Folder Include="UseCases\PersonUseCase\v1\DeletePerson\Services\Repositories\Abstractions\" />
+      <Folder Include="UseCases\PersonUseCase\v1\GetPerson\Models\" />
+    </ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 
 namespace Application.UseCases.PersonUseCase.v1.CreatePerson.Abstractions;
 
-public interface IPersonCustomersUseCase
+public interface ICreatePersonUseCase
 {
     void SetOutputPort(IOutputPort outputPort);
     Task ExecuteAsync(CreatePersonRequest request, CancellationToken cancellationToken);

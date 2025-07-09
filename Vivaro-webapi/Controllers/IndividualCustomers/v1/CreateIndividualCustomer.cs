@@ -11,7 +11,7 @@ namespace Vivaro_webapi.Controllers.IndividualCustomers.v1;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class CreateIndividualCustomer(IPersonCustomersUseCase useCase, Notification notification)
+public class CreateIndividualCustomer(ICreatePersonUseCase useCase, Notification notification)
     : ControllerBase, IOutputPort
 {
     private IActionResult? _viewModel;

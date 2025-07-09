@@ -16,8 +16,8 @@ public static class CreatePersonDependencyInjection
         .AddDependencies()
         .AddNotifications()
         .AddScoped<IKeycloakAdminService, KeycloakAdminService>()
-        .AddScoped<IValidator<CreatePersonRequest>, CreateIndividualCustomerRequestValidator>()
-        .AddScoped<IPersonCustomersUseCase, CreatePersonUseCase>()
-        .Decorate<IPersonCustomersUseCase, CreatePersonValidationUseCase>();
+        .AddScoped<IValidator<CreatePersonRequest>, CreatePersonRequestValidator>()
+        .AddScoped<ICreatePersonUseCase, CreatePersonUseCase>()
+        .Decorate<ICreatePersonUseCase, CreatePersonValidationUseCase>();
     
 }

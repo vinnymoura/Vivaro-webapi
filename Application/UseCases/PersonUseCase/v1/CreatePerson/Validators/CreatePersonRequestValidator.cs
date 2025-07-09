@@ -5,9 +5,9 @@ using FluentValidation;
 
 namespace Application.UseCases.PersonUseCase.v1.CreatePerson.Validators;
 
-public class CreateIndividualCustomerRequestValidator : AbstractValidator<CreatePersonRequest>
+public class CreatePersonRequestValidator : AbstractValidator<CreatePersonRequest>
 {
-    public CreateIndividualCustomerRequestValidator()
+    public CreatePersonRequestValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("O e-mail é obrigatório.")

@@ -28,7 +28,7 @@ public class CreatePersonDependencyInjectionTests
 
         var provider = services.BuildServiceProvider();
 
-        var useCase = provider.GetService<IPersonCustomersUseCase>();
+        var useCase = provider.GetService<ICreatePersonUseCase>();
 
         useCase.Should().NotBeNull();
     }

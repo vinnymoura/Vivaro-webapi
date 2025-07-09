@@ -12,7 +12,7 @@ namespace UnitTests.UseCases.IndividualCustomers.v1.Create;
 
 public class CreatePersonValidationUseCaseTests
 {
-    private readonly Mock<IPersonCustomersUseCase> _mockUseCase = new();
+    private readonly Mock<ICreatePersonUseCase> _mockUseCase = new();
     private readonly Mock<IValidator<CreatePersonRequest>> _mockValidator = new();
     private readonly Notification _notification = new();
     private readonly Mock<IOutputPort> _mockOutputPort = new();
